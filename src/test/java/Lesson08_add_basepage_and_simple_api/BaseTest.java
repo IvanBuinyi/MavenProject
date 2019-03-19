@@ -1,67 +1,77 @@
 package Lesson08_add_basepage_and_simple_api;
 
+import org.junit.AfterClass;
 import org.junit.AssumptionViolatedException;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.CacheLookup;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-public abstract class BaseTest {
+import java.util.concurrent.TimeUnit;
+
+public abstract class BaseTest extends SimpleAPI{
+
     protected static WebDriver driver;
+
+    @Override
+    WebDriver getDriver() {
+        return driver;
+    }
 
     @Rule
     public TestWatcher testWatcher = new TestWatcher() {
         @Override
         protected void succeeded(Description description) {
-            System.out.println(String.format("Test '%s' - PASSED", description.getMethodName()));
+            System.out.println(String
+                    .format("Test '%s' - PASSED", description.getMethodName()));
             super.succeeded(description);
         }
 
         @Override
         protected void failed(Throwable e, Description description) {
-            System.out.println(String.format("Test '%s' - FAILED", description.getMethodName()));
+            System.out.println(String
+                    .format("Test '%s' - FAILED due to: %s",
+                            description.getMethodName(),
+                            e.getMessage()));
             super.failed(e, description);
         }
 
         @Override
         protected void skipped(AssumptionViolatedException e, Description description) {
-            System.out.println(String.format("Test '%s' - SKIPPED", description.getMethodName()));
+            System.out.println(String
+                    .format("Test '%s' - SKIPPED", description.getMethodName()));
             super.skipped(e, description);
         }
 
         @Override
         protected void starting(Description description) {
-            System.out.println(String.format("Test '%s' - is starting...", description.getMethodName()));
+            System.out.println(String
+                    .format("Test '%s' - is starting...", description.getMethodName()));
             super.starting(description);
         }
-
-        @Override
-        protected void finished(Description description) {
-            super.finished(description);
-        }
     };
-    class LandingPage{
 
-        @CacheLookup
-        @FindBy(id = "search_query_top")
-        WebElement searchFieald;
-
-        @FindBy(xpath = "//*[@id=\"index\"]/div[2]/ul/li[1]")
-        WebElement firstTip;
-
-        public LandingPage(WebDriver driver){
-            PageFactory.initElements(driver, this);
-        }
-
-        void searchFor (String query){
-            searchFieald.clear();
-            searchFieald.sendKeys(query);
-        }
-
+    @BeforeClass
+    public static void setUp() {
+        driver = new ChromeDriver();
+        driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
+        driver.manage().window().maximize();
     }
 
+    @AfterClass
+    public static void tearDown() {
+        driver.quit();
+    }
+
+    void assertThat(ExpectedCondition<Boolean> condition) {
+        assertThat(condition, 10l);
+    }
+
+    void assertThat(ExpectedCondition<Boolean> condition, long timeout) {
+        waitFor(condition, timeout);
+    }
 }
