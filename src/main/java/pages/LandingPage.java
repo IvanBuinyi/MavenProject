@@ -1,10 +1,9 @@
-package Lesson09;
+package pages;
 
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-
-import static Lesson08_add_basepage_and_simple_api.Conditions.clickable;
+import utils.Conditions;
 
 public class LandingPage extends BasePage {
 
@@ -17,7 +16,7 @@ public class LandingPage extends BasePage {
 
     void searchFor(String query) {
         //$(searchFieldLocator, ExpectedConditions::elementToBeClickable).click();
-        $(searchFieldLocator, clickable).click();
+        $(searchFieldLocator, Conditions.clickable).click();
         $(searchFieldLocator).clear();
         $(searchFieldLocator).sendKeys(query);
     }

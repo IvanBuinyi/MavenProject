@@ -1,8 +1,8 @@
-package Lesson09;
+package Lesson10.a_add_wd_event_listener.b_file_download;
 
+import org.junit.Test;
 import pages.BaseTest;
 import pages.LandingPage;
-import org.junit.Test;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.textToBePresentInElementLocated;
 

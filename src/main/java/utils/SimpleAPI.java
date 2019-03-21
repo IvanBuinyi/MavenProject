@@ -1,4 +1,4 @@
-package Lesson09;
+package utils;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -43,7 +43,7 @@ public abstract class SimpleAPI {
         return $$(By.xpath(xPath));
     }
 
-    <T> T waitFor(ExpectedCondition<T> condition, long timeout) {
+    protected <T> T waitFor(ExpectedCondition<T> condition, long timeout) {
         return (new WebDriverWait(getDriver(), timeout)).until(condition);
     }
 

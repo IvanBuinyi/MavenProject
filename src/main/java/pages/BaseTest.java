@@ -1,4 +1,4 @@
-package Lesson09;
+package pages;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -11,10 +11,9 @@ import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import utils.SimpleAPI;
 
 import java.util.concurrent.TimeUnit;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 public abstract class BaseTest extends SimpleAPI {
 
@@ -24,6 +23,7 @@ public abstract class BaseTest extends SimpleAPI {
 
     @Override
     WebDriver getDriver() {
+        WebDriver driver = BaseTest.driver;
         return driver;
     }
 
