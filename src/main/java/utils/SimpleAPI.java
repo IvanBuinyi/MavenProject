@@ -13,7 +13,7 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllE
 
 public abstract class SimpleAPI {
 
-    abstract WebDriver getDriver();
+    public abstract WebDriver getDriver();
 
     protected void open(String url) {
         getDriver().get(url);
@@ -47,7 +47,7 @@ public abstract class SimpleAPI {
         return (new WebDriverWait(getDriver(), timeout)).until(condition);
     }
 
-    <T> T waitFor(ExpectedCondition<T> condition) {
+    protected <T> T waitFor(ExpectedCondition<T> condition) {
         return waitFor(condition, 10l);
     }
 }

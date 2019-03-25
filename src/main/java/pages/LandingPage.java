@@ -1,9 +1,10 @@
 package pages;
 
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import utils.Conditions;
+
+import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementWithText;
 
 public class LandingPage extends BasePage {
 
@@ -14,14 +15,22 @@ public class LandingPage extends BasePage {
         super(driver);
     }
 
-    void searchFor(String query) {
-        //$(searchFieldLocator, ExpectedConditions::elementToBeClickable).click();
-        $(searchFieldLocator, Conditions.clickable).click();
+    public void visit() {
+        open("http://automationpractice.com/index.php");
+    }
+
+    public void searchFor(String query) {
+        $(searchFieldLocator, Conditions.CLICKABLE).click();
         $(searchFieldLocator).clear();
         $(searchFieldLocator).sendKeys(query);
     }
 
-    void visit() {
-        open("http://automationpractice.com/index.php");
+    public void searchFor(String query, String oldTip) {
+        searchFor(query);
+        waitFor(invisibilityOfElementWithText(firstTipLocator, oldTip), 5l);
+    }
+
+    public String getFirstTipText() {
+        return $(firstTipLocator).getText();
     }
 }

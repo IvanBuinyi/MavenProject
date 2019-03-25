@@ -7,9 +7,10 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class LoginPage extends BasePage {
-    private static final Logger LOGGER = LogManager.getLogger(LoginPage.class);
+    private static final Logger LOGGER = (Logger) LogManager.getLogger(LoginPage.class);
 
     public LoginPage(WebDriver driver){
+        super();
 
     }
 }

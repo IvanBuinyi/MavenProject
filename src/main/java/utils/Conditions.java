@@ -9,7 +9,7 @@ import java.util.function.Function;
 
 public enum Conditions {
     visible(ExpectedConditions::visibilityOfElementLocated),
-    clickable(ExpectedConditions::elementToBeClickable);
+    CLICKABLE(ExpectedConditions::elementToBeClickable);
 
     private final Function<By, ExpectedCondition<WebElement>> condition;
 
