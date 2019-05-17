@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.util.function.Function;
 
 public enum Conditions {
-    visible(ExpectedConditions::visibilityOfElementLocated),
+    VISIBLE(ExpectedConditions::visibilityOfElementLocated),
     CLICKABLE(ExpectedConditions::elementToBeClickable);
 
     private final Function<By, ExpectedCondition<WebElement>> condition;
