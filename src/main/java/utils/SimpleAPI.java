@@ -40,8 +40,7 @@ public abstract class SimpleAPI {
     }
 
     protected WebElement $(By locator, Function<By, ExpectedCondition<WebElement>> condition) {
-        WebElement webElement = condition.andThen(this).apply(locator);
-        return webElement;
+        return waitFor(condition.apply(locator));
     }
 
     protected WebElement $(By locator, Conditions condition) {
