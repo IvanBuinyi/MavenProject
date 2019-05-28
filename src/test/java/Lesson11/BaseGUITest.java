@@ -1,13 +1,13 @@
-package Lesson10.a_add_wd_event_listener;
+package Lesson11;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.AfterClass;
 import org.junit.AssumptionViolatedException;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
@@ -20,11 +20,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public abstract class BaseTest extends SimpleAPI {
+public abstract class BaseGUITest extends SimpleAPI {
 
-    private static final Logger LOGGER = LogManager.getLogger(BaseTest.class);
+    private static final Logger LOGGER = LogManager.getLogger(BaseGUITest.class);
 
-    protected static WebDriver driver;
+    protected WebDriver driver;
 
     @Override
     protected WebDriver getDriver() {
@@ -36,7 +36,7 @@ public abstract class BaseTest extends SimpleAPI {
         @Override
         protected void succeeded(Description description) {
             LOGGER.info(String
-                    .format("Test '%s' - PASSED", description.getMethodName()));
+                    .format("Test '%s' - PASSED", descriptionToReadableFormat(description)));
             super.succeeded(description);
         }
 
@@ -44,41 +44,47 @@ public abstract class BaseTest extends SimpleAPI {
         protected void failed(Throwable e, Description description) {
             LOGGER.info(String
                     .format("Test '%s' - FAILED due to: %s",
-                            description.getMethodName(),
+                            descriptionToReadableFormat(description),
                             e.getMessage()));
+            captureScreenshoot(description.getMethodName());
             super.failed(e, description);
         }
 
         @Override
         protected void skipped(AssumptionViolatedException e, Description description) {
             LOGGER.info(String
-                    .format("Test '%s' - SKIPPED", description.getMethodName()));
+                    .format("Test '%s' - SKIPPED", descriptionToReadableFormat(description)));
             super.skipped(e, description);
         }
 
         @Override
         protected void starting(Description description) {
             LOGGER.info(String
-                    .format("Test '%s' - is starting...", description.getMethodName()));
+                    .format("Test '%s' - is starting...", descriptionToReadableFormat(description)));
+            if (driver == null) {
+                EventFiringWebDriver wd = new EventFiringWebDriver(new ChromeDriver());
+                wd.register(new EventHandler());
+
+                driver = wd;
+                LOGGER.debug("WebDriver has been started");
+                driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
+                driver.manage().window().setPosition(new Point(0,0));
+                driver.manage().window().setSize(new Dimension(1920,1080));
+            }
             super.starting(description);
+        }
+
+        @Override
+        protected void finished(Description description) {
+            driver.quit();
+            driver = null;
+            LOGGER.debug("WebDriver has been shut down.");
+            super.finished(description);
         }
     };
 
-    @BeforeClass
-    public static void setUp() {
-        EventFiringWebDriver wd = new EventFiringWebDriver(new ChromeDriver());
-        wd.register(new EventHandler());
-
-        driver = wd;
-        LOGGER.debug("WebDriver has been started");
-        driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
-        driver.manage().window().maximize();
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        driver.quit();
-        LOGGER.debug("WebDriver has been shut down");
+    private String descriptionToReadableFormat(Description description){
+        return description.getMethodName().replace("_", " ");
     }
 
     void assertThat(ExpectedCondition<Boolean> condition) {

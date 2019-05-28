@@ -1,4 +1,4 @@
-package Lesson10.a_add_wd_event_listener;
+package Lesson09.a_add_simple_logging;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,10 +10,7 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import utils.EventHandler;
-import utils.SimpleAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +24,7 @@ public abstract class BaseTest extends SimpleAPI {
     protected static WebDriver driver;
 
     @Override
-    protected WebDriver getDriver() {
+    WebDriver getDriver() {
         return driver;
     }
 
@@ -66,10 +63,7 @@ public abstract class BaseTest extends SimpleAPI {
 
     @BeforeClass
     public static void setUp() {
-        EventFiringWebDriver wd = new EventFiringWebDriver(new ChromeDriver());
-        wd.register(new EventHandler());
-
-        driver = wd;
+        driver = new ChromeDriver();
         LOGGER.debug("WebDriver has been started");
         driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
         driver.manage().window().maximize();

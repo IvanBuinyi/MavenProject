@@ -1,4 +1,4 @@
-package Lesson10.a_add_wd_event_listener;
+package Lesson10.b_file_downloading;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import utils.EventHandler;
 import utils.SimpleAPI;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -108,6 +109,6 @@ public abstract class BaseTest extends SimpleAPI {
 
     @FunctionalInterface
     public interface Assertion {
-        void assertSmth();
+        void assertSmth() throws IOException;
     }
 }

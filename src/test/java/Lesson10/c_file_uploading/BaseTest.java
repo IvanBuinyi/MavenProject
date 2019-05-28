@@ -1,4 +1,4 @@
-package Lesson10.a_add_wd_event_listener;
+package Lesson10.c_file_uploading;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
